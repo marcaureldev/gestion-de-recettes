@@ -81,6 +81,33 @@
       </div>
     </section>
 
+    <section class="p-10 mt-4 bg-[#F2DCB9]">
+      <div class="space-y-5">
+        <h1 class="text-3xl font-bold text-center">Gardons le Contact</h1>
+        <p class="text-gray_color text-center">
+          Inscrivez-vous à notre Newsletters, afin que nous puissions vous faire part de nos nouvelles et de nos offres.
+        </p>
+        <form>
+          <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
+            <input type="email" id="email" name="email" placeholder="Entrer votre Email"
+              class="w-[18em] sm:w-[30em] px-4 py-2 border-[1px] border-gray_color rounded-lg outline-none" required>
+            <Button :button="abonnement" style="color: #fff;" class="w-[18em] sm:max-w-[10em]" />
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="p-8">
+      <div class="p-5">
+        <h1 class="text-3xl font-bold">Recettes Populaires</h1>
+        <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 p-5 lg:grid-cols-4 gap-5 place-items-center resp">
+        <PopularCard v-for="(recipe, i) in popularRecipes" :key="i" :popular="recipe" />
+      </div>
+    </section>
+
     <section>
       
     </section>
@@ -96,6 +123,7 @@ export default {
       inscription: 'Inscription',
       connexion: 'Connexion',
       new_recipes: 'Créer une nouvelle recette',
+      abonnement: 'S\'abonner',
 
       trendindRecipes: [
         {
@@ -212,6 +240,48 @@ export default {
         },
       ],
 
+      popularRecipes: [
+        {
+          backgroundImage: 'url(/images/food_17.jpg)',
+          name: 'Hamburger',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_18.jpg)',
+          name: 'Sauce',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_10.jpg)',
+          name: 'Akassa',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_11.jpg)',
+          name: 'Riz + Brochettes',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_12.jpg)',
+          name: 'Salade au Poisson',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_13.jpg)',
+          name: 'Frites',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_21.jpg)',
+          name: 'Riz au gras',
+        },
+
+        {
+          backgroundImage: 'url(/images/food_24.jpg)',
+          name: 'Onions Rings',
+        },
+      ],
+
     }
   }
 
@@ -219,4 +289,12 @@ export default {
 
 </script>
 
-<style></style>
+<style>
+  .resp{
+    @media (max-width: 430px) {
+      display: grid;
+      grid-template-columns: 1fr;
+      
+    }
+  }
+</style>
