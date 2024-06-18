@@ -12,6 +12,7 @@ module.exports = {
     colors: {
       'brown_color': '#B55D51',
       'gray_color': '#878787',
+      'gray': '#EBEBEB',
     },
     fontFamily:{
       'Roboto': '"Roboto", sans-serif'
@@ -21,6 +22,7 @@ module.exports = {
         '70': '70em',
         '10': '10em',
         '40': '40em',
+        '30': '30em',
       },
       width: {
         '24': '24em',

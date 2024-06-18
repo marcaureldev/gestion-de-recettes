@@ -4,7 +4,7 @@
 
             <div class="relative flex h-16 items-center justify-between">
                 <div class="flex items-center font-bold text-xl">
-                    <img src="../assets/images/logo.png" alt="" class="w-16">
+                    <img src="/images/logo.png" alt="" class="w-16">
                     <p>Cuisto<span class="text-brown_color">Recettes</span></p>
                 </div>
 
