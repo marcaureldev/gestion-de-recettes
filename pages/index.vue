@@ -1,10 +1,15 @@
 <template>
   <div class="">
-    <header class="font-medium p-4">
+
+    <!-- =============================== HEADER SECTION ========================================= -->
+
+    <header class="font-medium p-4 max-w-70 mx-auto">
       <NavBar />
     </header>
 
-    <section>
+    <!-- =============================== HERO SECTION ========================================= -->
+
+    <section class="max-w-70 mx-auto">
       <div class="mt-5 p-5 flex justify-between items-center">
         <div class="space-y-5">
 
@@ -24,7 +29,7 @@
             <div class="flex gap-5 justify-center md:justify-start items-center">
               <Button :button="connexion" style="color: black; padding: 2vh 5vh; background-color: #EBEBEB;"
                 class="md:hidden block" />
-              <Button :button="inscription" style="color: #fff; padding: 2vh 5vh;" />
+              <NuxtLink to="/signup"> <Button :button="inscription" style="color: #fff; padding: 2vh 5vh;" /></NuxtLink>
             </div>
             <p class="text-sm text-gray_color">Do you have account? <a href="#" class="text-brown_color">Login</a> </p>
           </div>
@@ -34,7 +39,9 @@
       </div>
     </section>
 
-    <section class="p-5 py-10">
+    <!-- =============================== SECTION PARTAGEZ VOS RECETTES ========================================= -->
+
+    <section class="p-5 py-10 max-w-70 mx-auto">
       <div class="md:flex gap-8 items-center space-y-5">
         <img src="/images/share.jpg" alt="Image de recettes"
           class="w-[18em] sm:w-[22em] md:w-[18em] mx-auto rounded-xl sm:rotate-90 md:rotate-0">
@@ -51,35 +58,46 @@
       </div>
     </section>
 
-    <section class="p-8">
+    <!-- =============================== SECTION À LA UNE ========================================= -->
+
+    <section class="p-8 max-w-70 mx-auto">
       <div class="p-5">
         <h1 class="text-3xl font-bold">À la une</h1>
         <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 place-items-center">
-        <TrendingCard v-for="(recipe, i) in trendindRecipes" :key="i" :trending="recipe" />
+        <TrendingCard v-for="(recipe, i) in trendindRecipes" :key="i" :trending="recipe"
+          class=" hover:scale-90 duration-700 ease-in-out" />
       </div>
     </section>
 
-    <section class="p-8">
+    <!-- =============================== SECTION BLOG ========================================= -->
+
+    <section class="p-8 max-w-70 mx-auto">
       <div class="p-3">
         <h1 class="text-3xl font-bold">Blog</h1>
         <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 place-items-center ">
-        <BlogCard v-for="(element, index) in blogData" :key="index" :blog="element" />
+        <BlogCard v-for="(element, index) in blogData" :key="index" :blog="element"
+          class=" hover:scale-110 duration-700 ease-in-out" />
       </div>
     </section>
 
-    <section class="p-8">
+    <!-- =============================== SECTION EXPLORER LES RECETTES ========================================= -->
+
+    <section class="p-8 max-w-70 mx-auto">
       <div class="p-5">
         <h1 class="text-3xl font-bold">Explorez les Recettes</h1>
         <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 place-items-center">
-        <TrendingCard v-for="(recipe, i) in exploreRecipes" :key="i" :trending="recipe" />
+        <TrendingCard v-for="(recipe, i) in exploreRecipes" :key="i" :trending="recipe"
+          class=" hover:scale-90 duration-700 ease-in-out" />
       </div>
     </section>
+
+    <!-- =============================== SECTION CONTACT NEWSLETTERS ========================================= -->
 
     <section class="p-10 mt-4 bg-[#F2DCB9]">
       <div class="space-y-5">
@@ -97,7 +115,9 @@
       </div>
     </section>
 
-    <section class="p-8">
+    <!-- =============================== SECTION RECETTES POPULAIRES ========================================= -->
+
+    <section class="p-8 max-w-70 mx-auto">
       <div class="p-5">
         <h1 class="text-3xl font-bold">Recettes Populaires</h1>
         <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
@@ -108,8 +128,10 @@
       </div>
     </section>
 
-    <section>
-      
+    <!-- =============================== FOOTER SECTION ========================================= -->
+
+    <section class="p-8 bg-gray">
+      <Footer />
     </section>
 
   </div>
@@ -290,11 +312,11 @@ export default {
 </script>
 
 <style>
-  .resp{
-    @media (max-width: 430px) {
-      display: grid;
-      grid-template-columns: 1fr;
-      
-    }
+.resp {
+  @media (max-width: 430px) {
+    display: grid;
+    grid-template-columns: 1fr;
+
   }
+}
 </style>
