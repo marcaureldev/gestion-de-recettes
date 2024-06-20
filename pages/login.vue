@@ -13,14 +13,12 @@
                 </NuxtLink>
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 
-                    <form id="connect-google-button" method="post" action="">
-                        <button class="border border-[#e0e0e0] rounded-md block w-full py-3 px-6" type="submit">
-                            <div class="flex justify-center gap-4 items-center text-gray_color">
-                                <IconGoogle class="size-6" />
-                                Inscrivez-vous avec Google
-                            </div>
-                        </button>
-                    </form>
+                    <button class="border border-[#e0e0e0] rounded-md block w-full py-3 px-6" type="submit" @click="signInWithGoogleHandler">
+                        <div class="flex justify-center gap-4 items-center text-gray_color">
+                            <IconGoogle class="size-6" />
+                            Se connecter avec Google
+                        </div>
+                    </button>
 
 
                     <div class="flex items-center">
@@ -29,21 +27,29 @@
                         <div class="w-full h-0.5 bg-[#E5E7EB]"></div>
                     </div>
 
-                    <form class="space-y-4 md:space-y-" method="POST" action="/auth/login/">
+                    <form class="space-y-4 md:space-y-" @submit.prevent="signIn">
+
+                        <!-- Afficher les erreurs -->
+                        <div v-if="error" class="text-rouge  text-sm">
+                            Les identifiants ne sont pas corrects
+                        </div>
 
                         <div class="">
                             <div class="mb-5">
                                 <label for="email" class="mb-3 block text-base  text-gray_color">
                                     Votre email
                                 </label>
-                                <input type="text" name="email" id="email" placeholder="nom@example.com"
+                                <input type="email" name="email" id="email" placeholder="nom@example.com"
+                                    v-model="email"
                                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 outline-none focus:border-[#6A64F1] focus:shadow-md" />
                             </div>
                         </div>
 
                         <div>
-                            <label for="password" class="mb-3 block text-base text-gray_color">Password</label>
+                            <label for="password" class="mb-3 block text-base text-gray_color">Votre mot de
+                                passe</label>
                             <input type="password" name="password" id="password" placeholder="••••••••"
+                                v-model="password"
                                 class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 required="">
                         </div>
@@ -58,6 +64,7 @@
                             Vous n'avez pas de compte?
                             <NuxtLink to="/signup" class="font-medium hover:underline"> Inscription</NuxtLink>
                         </p>
+
                     </form>
                 </div>
             </div>
@@ -67,9 +74,58 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
 
+    setup() {
+        const email = ref("");
+        const password = ref("");
+        const error = ref(null);
+
+        const router = useRouter();
+
+        function resetForm() {
+            email.value = '';
+            password.value = '';
+        }
+
+        const signIn = async () => {
+            try {
+                const credentials = await signInUser(email.value, password.value);
+                resetForm();
+                router.push('/');
+            } catch (err) {
+                console.error('Error during sign in:', err);
+                error.value = err.message; // Afficher l'erreur dans l'interface utilisateur
+                resetForm();
+            }
+        }
+
+        //Se connecter avec google
+
+        const signInWithGoogleHandler = async () => {
+            try {
+                const credentials = await signUpWithGoogle();
+                console.log(credentials);
+                router.push('/');
+            } catch (err) {
+                console.error('Error during Google sign in:', err);
+                error.value = err.message;
+            }
+        }
+
+        return {
+            email,
+            password,
+            error,
+            signIn,
+            signInWithGoogleHandler
+        };
+    },
 }
+
 </script>
+
 
 <style></style>

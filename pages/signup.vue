@@ -11,13 +11,14 @@
             </div>
             <!-- Author: FormBold Team -->
             <form @submit.prevent="signUp" class="space-y-4">
+
                 <button class="border border-[#e0e0e0] rounded-md block w-full py-3 px-6" type="submit">
-                    <div class="flex justify-center gap-4 items-center text-gray_color">
+                    <div class="flex justify-center gap-4 items-center text-gray_color" @click="signUpWithGoogleHandler" >
                         <IconGoogle class="size-6" />
-                        Inscrivez-vous avec Google
+                        S'inscrire avec Google
                     </div>
                 </button>
-
+                
                 <div class="flex items-center">
                     <div class="w-full h-0.5 bg-[#E5E7EB]"></div>
                     <div class="px-5 text-center text-gray-500 dark:text-gray-400">ou</div>
@@ -96,7 +97,7 @@ export default {
         const email = ref("");
         const numero = ref("");
         const password = ref("");
-        const error = ref(null); 
+        const error = ref(null);
 
         const router = useRouter();
 
@@ -108,13 +109,29 @@ export default {
             password.value = '';
         }
 
+        //S'inscrire manuellement
+
         const signUp = async () => {
             try {
                 const credentials = await createUser(email.value, password.value);
+                console.log(credentials)
                 resetForm();
-                router.push('/'); // Utiliser router.push pour la navigation
+                router.push('/');
             } catch (err) {
                 console.error('Error during sign up:', err);
+                error.value = err.message;
+            }
+        }
+
+        //S'inscrire avec google
+
+        const signUpWithGoogleHandler = async () => {
+            try {
+                const credentials = await signUpWithGoogle();
+                console.log(credentials);
+                router.push('/');
+            } catch (err) {
+                console.error('Error during Google sign in:', err);
                 error.value = err.message;
             }
         }
@@ -127,6 +144,7 @@ export default {
             password,
             error,
             signUp,
+            signUpWithGoogleHandler,
         };
     },
 }

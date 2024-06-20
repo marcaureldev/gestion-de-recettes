@@ -13,6 +13,7 @@ module.exports = {
       'brown_color': '#B55D51',
       'gray_color': '#878787',
       'gray': '#EBEBEB',
+      'rouge': '#EF4444',
     },
     fontFamily:{
       'Roboto': '"Roboto", sans-serif'
