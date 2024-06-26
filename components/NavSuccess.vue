@@ -2,7 +2,6 @@
     <ClientOnly>
         <Disclosure as="nav" class="" v-slot="{ open }">
             <div class="mx-auto ">
-
                 <div class="relative flex h-16 items-center justify-between">
                     <div class="flex items-center font-bold text-xl">
                         <img src="/images/logo.png" alt="" class="w-16">
@@ -19,18 +18,28 @@
                         </div>
                     </div>
 
-                    <div class="hidden lg:block">
-                        <NuxtLink to="/login"><Button :button="button" style="background-color: white;" /></NuxtLink>
-                        <NuxtLink to="/signup"><Button :button="button1" style="color: white;" /></NuxtLink>
+                    <div class="lg:flex gap-3 items-center hidden">
+                        <img src="/images/avatar.jpg" alt="Avatar" class="w-12 h-12 rounded-[24px]">
                     </div>
 
+                    <div class="hidden lg:block">
+                        <div @click="signOutUserHandler">
+                            <NuxtLink to=""><Button :button="button" style="color: white;" /></NuxtLink>
+                        </div>
+                    </div>
 
-                    <div class="absolute inset-y-0 right-0 flex items-center lg:hidden">
-                        <!-- Mobile menu button-->
-                        <DisclosureButton>
-                            <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-                            <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
-                        </DisclosureButton>
+                    <div class="flex justify-center items-center gap-3">
+                        <div class="flex gap-3 items-center lg:hidden">
+                            <img src="/images/avatar.jpg" alt="Avatar" class="w-12 h-12 rounded-[24px]">
+                        </div>
+
+                        <div class="flex items-center lg:hidden">
+                            <!-- Mobile menu button-->
+                            <DisclosureButton>
+                                <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
+                                <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+                            </DisclosureButton>
+                        </div>
                     </div>
 
                 </div>
@@ -43,19 +52,19 @@
                         :aria-current="item.current ? 'page' : undefined">{{ item.name }}
                     </DisclosureButton>
                 </div>
-                <div>
-                    <NuxtLink to="/login"><Button :button="button" style="background-color: white;" /></NuxtLink>
-                    <NuxtLink to="/signup"><Button :button="button1" style="color: white;" /></NuxtLink>
+                <div @click="signOutUserHandler">
+                    <NuxtLink to=""><Button :button="button" style="color: white;" /></NuxtLink>
                 </div>
             </DisclosurePanel>
         </Disclosure>
     </ClientOnly>
-
 </template>
 
 <script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
+import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 const navigation = [
     { name: 'Accueil', href: '#', current: true },
@@ -64,6 +73,19 @@ const navigation = [
     { name: 'Blog', href: '#', current: false },
     { name: 'À Propos', href: '#', current: false },
 ];
-const button = 'Connexion';
-const button1 = 'Inscription'
+const button = 'Déconnexion';
+
+const error = ref(null);
+const router = useRouter();
+
+const signOutUserHandler = async () => {
+    try {
+        await signOutUser();
+        console.log('User signed out successfully');
+        router.push('/login');
+    } catch (err) {
+        console.error('Error during sign out:', err);
+        error.value = err.message;
+    }
+};
 </script>

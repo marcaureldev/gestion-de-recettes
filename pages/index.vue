@@ -146,6 +146,8 @@ export default {
       connexion: 'Connexion',
       new_recipes: 'Créer une nouvelle recette',
       abonnement: 'S\'abonner',
+      user: null,
+      userData: null,
 
       trendindRecipes: [
         {
@@ -305,7 +307,7 @@ export default {
       ],
 
     }
-  }
+  },
 
 }
 

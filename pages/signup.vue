@@ -13,12 +13,13 @@
             <form @submit.prevent="signUp" class="space-y-4">
 
                 <button class="border border-[#e0e0e0] rounded-md block w-full py-3 px-6" type="submit">
-                    <div class="flex justify-center gap-4 items-center text-gray_color" @click="signUpWithGoogleHandler" >
+                    <div class="flex justify-center gap-4 items-center text-gray_color"
+                        @click="signUpWithGoogleHandler">
                         <IconGoogle class="size-6" />
                         S'inscrire avec Google
                     </div>
                 </button>
-                
+
                 <div class="flex items-center">
                     <div class="w-full h-0.5 bg-[#E5E7EB]"></div>
                     <div class="px-5 text-center text-gray-500 dark:text-gray-400">ou</div>
@@ -92,6 +93,7 @@ import { useRouter } from 'vue-router';
 export default {
 
     setup() {
+        const firebaseUser = useFirebaseUser();
         const nom = ref("");
         const prenom = ref("");
         const email = ref("");
@@ -113,15 +115,20 @@ export default {
 
         const signUp = async () => {
             try {
-                const credentials = await createUser(email.value, password.value);
-                console.log(credentials)
+                const additionalData = {
+                    nom: nom.value,
+                    prenom: prenom.value,
+                    numero: numero.value,
+                };
+                const credentials = await createUser(email.value, password.value, additionalData);
+                console.log(credentials);
                 resetForm();
-                router.push('/');
+                router.push('/success');
             } catch (err) {
                 console.error('Error during sign up:', err);
                 error.value = err.message;
             }
-        }
+        };
 
         //S'inscrire avec google
 
@@ -129,12 +136,12 @@ export default {
             try {
                 const credentials = await signUpWithGoogle();
                 console.log(credentials);
-                router.push('/');
+                router.push('/success');
             } catch (err) {
                 console.error('Error during Google sign in:', err);
                 error.value = err.message;
             }
-        }
+        };
 
         return {
             nom,
