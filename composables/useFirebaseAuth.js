@@ -1,17 +1,7 @@
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut,
-    signInWithPopup,
-    GoogleAuthProvider,
-} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-
-//Fonction pour créer un nouvel utilisateur lors de sa première inscription 
-
+// Fonction pour créer un nouvel utilisateur lors de sa première inscription
 export const createUser = async (email, password, additionalData) => {
     const auth = getAuth();
     const db = getFirestore();
@@ -31,8 +21,7 @@ export const createUser = async (email, password, additionalData) => {
     }
 }
 
-//Fonction pour connecter un utilisateur déjà existant 
-
+// Fonction pour connecter un utilisateur déjà existant
 export const signInUser = async (email, password) => {
     const auth = getAuth();
     try {
@@ -43,8 +32,7 @@ export const signInUser = async (email, password) => {
     }
 }
 
-//Fonction pour définir un observateur d'état d'authentification et obtenir les données utilisateur
-
+// Fonction pour définir un observateur d'état d'authentification et obtenir les données utilisateur
 export const initUser = async () => {
     const auth = getAuth();
     const firebaseUser = useFirebaseUser();
@@ -60,7 +48,6 @@ export const initUser = async () => {
         }
     });
 }
-
 
 // Fonction pour récupérer les informations utilisateur supplémentaires
 export const getUserData = async (uid) => {
@@ -78,9 +65,7 @@ export const getUserData = async (uid) => {
     }
 }
 
-
-//Fonction pour déconnecter un utilisateur
-
+// Fonction pour déconnecter un utilisateur
 export const signOutUser = async () => {
     const auth = getAuth();
     try {
@@ -91,9 +76,7 @@ export const signOutUser = async () => {
     }
 }
 
-
-//Fonction pour inscrire un utilisateur avec google 
-
+// Fonction pour inscrire un utilisateur avec Google
 export const signUpWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
@@ -122,4 +105,14 @@ export const signUpWithGoogle = async () => {
     }
 };
 
-//
+// Fonction pour mettre à jour les informations de l'utilisateur
+export const updateUser = async (uid, updatedData) => {
+    const db = getFirestore();
+    try {
+        await updateDoc(doc(db, 'users', uid), updatedData);
+        console.log("User information updated successfully!");
+    } catch (error) {
+        console.error("Error updating user information: ", error);
+        throw error;
+    }
+};

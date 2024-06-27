@@ -26,6 +26,10 @@
                     <div class="w-full h-0.5 bg-[#E5E7EB]"></div>
                 </div>
 
+                <div v-if="error" class="text-rouge text-sm">
+                    {{ error }}
+                </div>
+
                 <div class="-mx-3 flex flex-wrap">
                     <div class="w-full px-3 sm:w-1/2">
                         <div class="">
@@ -126,7 +130,7 @@ export default {
                 router.push('/success');
             } catch (err) {
                 console.error('Error during sign up:', err);
-                error.value = err.message;
+                error.value = 'Une erreur s\'est produite, Veuillez réessayer!';
             }
         };
 

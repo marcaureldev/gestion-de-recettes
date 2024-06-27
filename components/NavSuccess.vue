@@ -19,7 +19,11 @@
                     </div>
 
                     <div class="lg:flex gap-3 items-center hidden">
-                        <img src="/images/avatar.jpg" alt="Avatar" class="w-12 h-12 rounded-[24px]">
+                        <NuxtLink to="/profile">
+                            <div class="flex gap-3 items-center ">
+                                <img src="/images/avatar.jpg" alt="Avatar" class="w-10 h-10 rounded-[20px]">
+                            </div>
+                        </NuxtLink>
                     </div>
 
                     <div class="hidden lg:block">
@@ -29,10 +33,11 @@
                     </div>
 
                     <div class="flex justify-center items-center gap-3">
-                        <div class="flex gap-3 items-center lg:hidden">
-                            <img src="/images/avatar.jpg" alt="Avatar" class="w-12 h-12 rounded-[24px]">
-                        </div>
-
+                        <NuxtLink to="/profile">
+                            <div class="flex gap-3 items-center lg:hidden">
+                                <img src="/images/avatar.jpg" alt="Avatar" class="w-10 h-10 rounded-[20px]">
+                            </div>
+                        </NuxtLink>
                         <div class="flex items-center lg:hidden">
                             <!-- Mobile menu button-->
                             <DisclosureButton>

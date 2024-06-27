@@ -19,6 +19,9 @@ module.exports = {
       'Roboto': '"Roboto", sans-serif'
     },
     extend: {
+      backgroundImage: {
+        'profile': "url('/images/food_29.png')",
+      },
       maxWidth: {
         '70': '70em',
         '10': '10em',

@@ -7,7 +7,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   // Vérifier l'état de l'utilisateur Firebase
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      console.log(auth)
       console.log('User is signed in');
       // L'utilisateur est connecté, laissez-le accéder à la route demandée
     } else {
