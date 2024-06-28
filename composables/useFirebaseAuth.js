@@ -1,18 +1,38 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    signInWithPopup,
+    GoogleAuthProvider,
+    updateProfile,
+} from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Fonction pour créer un nouvel utilisateur lors de sa première inscription
-export const createUser = async (email, password, additionalData) => {
+export const createUser = async (email, password, additionalData, avatarUrl) => {
     const auth = getAuth();
     const db = getFirestore();
+    const storage = getStorage();
     try {
         const credentials = await createUserWithEmailAndPassword(auth, email, password);
         const user = credentials.user;
 
+        // Stocker l'avatar dans Firebase Storage
+        let photoURL = null;
+        if (avatarUrl) {
+            const storageRef = ref(storage, `avatars/${user.uid}/${avatarUrl.name}`);
+            await uploadBytes(storageRef, avatarUrl);
+            photoURL = await getDownloadURL(storageRef);
+        }
+
         // Stocker les informations supplémentaires dans Firestore
         await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
-            ...additionalData
+            ...additionalData,
+            photoURL,
         });
 
         return credentials;
@@ -39,7 +59,7 @@ export const initUser = async () => {
     firebaseUser.value = auth.currentUser;
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // Récupérer les informations utilisateur supplémentaires
+            // Récupérer les informations utilisateur supplémentaires depuis Firestore
             const userData = await getUserData(user.uid);
             firebaseUser.value = { ...user, ...userData };
         } else {
@@ -55,7 +75,11 @@ export const getUserData = async (uid) => {
     try {
         const userDoc = await getDoc(doc(db, 'users', uid));
         if (userDoc.exists()) {
-            return userDoc.data();
+            const userData = userDoc.data();
+            return {
+                ...userData,
+                photoURL: userData.photoURL || null, // Assurez-vous que photoURL est défini ou null si non défini
+            };
         } else {
             console.log("No such document!");
             return null;
@@ -113,6 +137,27 @@ export const updateUser = async (uid, updatedData) => {
         console.log("User information updated successfully!");
     } catch (error) {
         console.error("Error updating user information: ", error);
+        throw error;
+    }
+};
+
+//Fonction pour changer la photo de profil de l'utilisateur
+
+export const updateProfilePhoto = async (uid, file) => {
+    const storage = getStorage();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    try {
+        const fileRef = ref(storage, `profile_photos/${uid}/${file.name}`);
+        const snapshot = await uploadBytes(fileRef, file);
+        const photoURL = await getDownloadURL(snapshot.ref);
+        await updateProfile(user, { photoURL });
+
+        // Mettre à jour Firestore avec la nouvelle URL de la photo
+        await updateDoc(doc(getFirestore(), 'users', uid), { photoURL });
+
+        return photoURL;
+    } catch (error) {
         throw error;
     }
 };

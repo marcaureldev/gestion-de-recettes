@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { initUser } from "~/composables/useFirebaseAuth";
 
 export default defineNuxtPlugin(async nuxtApp => {
   // Doing something with nuxtApp
@@ -17,6 +19,6 @@ export default defineNuxtPlugin(async nuxtApp => {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
+  const storage = getStorage(app);
   await initUser();
 })

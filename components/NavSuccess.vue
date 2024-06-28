@@ -20,8 +20,7 @@
 
                     <div class="lg:flex gap-3 items-center hidden">
                         <NuxtLink to="/profile">
-                            <div class="flex gap-3 items-center ">
-                                <img src="/images/avatar.jpg" alt="Avatar" class="w-10 h-10 rounded-[20px]">
+                            <div class="w-10 h-10 rounded-[20px] bg-center bg-cover " :style="{ backgroundImage: `url(${photoUrl})`}">
                             </div>
                         </NuxtLink>
                     </div>
@@ -34,8 +33,7 @@
 
                     <div class="flex justify-center items-center gap-3">
                         <NuxtLink to="/profile">
-                            <div class="flex gap-3 items-center lg:hidden">
-                                <img src="/images/avatar.jpg" alt="Avatar" class="w-10 h-10 rounded-[20px]">
+                            <div class="w-10 h-10 rounded-[20px] bg-center bg-cover lg:hidden"  :style="{ backgroundImage: `url(${photoUrl})`}">
                             </div>
                         </NuxtLink>
                         <div class="flex items-center lg:hidden">
@@ -70,6 +68,8 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { state } from '~/store';
+import { PhotoIcon } from '@heroicons/vue/16/solid';
 
 const navigation = [
     { name: 'Accueil', href: '#', current: true },
@@ -82,6 +82,8 @@ const button = 'Déconnexion';
 
 const error = ref(null);
 const router = useRouter();
+const { user, photoUrl } = useFirebaseUser();
+
 
 const signOutUserHandler = async () => {
     try {

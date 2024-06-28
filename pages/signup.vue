@@ -76,6 +76,12 @@
                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 outline-none focus:border-[#6A64F1] focus:shadow-md"
                         required="">
                 </div>
+                <div>
+                    <label for="avatar" class="mb-3 block text-base text-gray_color"> Votre avatar (optionnel)</label>
+                    <input type="file" name="avatar" id="avatar" @change="onFileChange"
+                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 outline-none focus:border-[#6A64F1] focus:shadow-md"
+                        required="">
+                </div>
 
                 <button type="submit" class="bg-brown_color rounded-md font-bold w-full py-3 px-6"
                     style="color: white;">
@@ -103,6 +109,7 @@ export default {
         const email = ref("");
         const numero = ref("");
         const password = ref("");
+        const avatarUrl = ref("")
         const error = ref(null);
 
         const router = useRouter();
@@ -115,6 +122,20 @@ export default {
             password.value = '';
         }
 
+        const onFileChange = async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                avatarUrl.value = file;
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour de la photo de profil :", error);
+            }
+        };
+
+        
+
+
         //S'inscrire manuellement
 
         const signUp = async () => {
@@ -124,7 +145,7 @@ export default {
                     prenom: prenom.value,
                     numero: numero.value,
                 };
-                const credentials = await createUser(email.value, password.value, additionalData);
+                const credentials = await createUser(email.value, password.value, additionalData, avatarUrl.value);
                 console.log(credentials);
                 resetForm();
                 router.push('/success');
@@ -153,7 +174,9 @@ export default {
             email,
             numero,
             password,
+            avatarUrl,
             error,
+            onFileChange,
             signUp,
             signUpWithGoogleHandler,
         };

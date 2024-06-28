@@ -14,10 +14,12 @@
             <hr style="max-width: 68em; margin:auto" class="border border-brown_color">
 
             <div class="max-w-30 flex flex-wrap justify-center items-center p-5 space-y-4">
-                <div class="w-28 h-28 rounded-[56px] bg-profile bg-center bg-cover mx-auto">
+                <div class="w-28 h-28 rounded-[56px] bg-center bg-cover mx-auto"
+                    v-if="user" :style="{ backgroundImage: `url(${photoUrl})` }">
                 </div>
+                <input type="file" id="fileInput" class="hidden" @change="onFileChange" />
                 <div class="flex flex-wrap justify-center gap-5 items-center">
-                    <Button :button="modifier" style="color: white;" />
+                    <Button :button="modifier" @click="openFilePicker" style="color: white;" />
                     <Button :button="supprimer" style="background-color: #EBEBEB; border: #000 solid 1.95px;" />
                 </div>
             </div>
@@ -41,8 +43,9 @@
                             Votre prenom
                         </label>
                         <div class="border-b-2 border-b-brown_color">
-                            <input type="text" name="prenom" id="prenom" class="mb-1 w-full rounded-md py-2 px-6 outline-none"
-                                v-model="user.prenom" v-if="user"/>
+                            <input type="text" name="prenom" id="prenom"
+                                class="mb-1 w-full rounded-md py-2 px-6 outline-none" v-model="user.prenom"
+                                v-if="user" />
                         </div>
                     </div>
                 </div>
@@ -65,8 +68,9 @@
                             Votre numero
                         </label>
                         <div class="border-b-2 border-b-brown_color">
-                            <input type="text" name="numero" id="numero" class="mb-1 w-full rounded-md py-2 px-6 outline-none"
-                                v-model="user.numero" v-if="user"/>
+                            <input type="text" name="numero" id="numero"
+                                class="mb-1 w-full rounded-md py-2 px-6 outline-none" v-model="user.numero"
+                                v-if="user" />
                         </div>
                     </div>
                 </div>
@@ -78,8 +82,8 @@
                         </label>
                         <div class="border-b-2 border-b-brown_color">
                             <input type="password" name="password" id="password"
-                                class="mb-1 w-full rounded-md py-2 px-6 outline-none" v-model="user.password" v-if="user"
-                                placeholder="••••••••" />
+                                class="mb-1 w-full rounded-md py-2 px-6 outline-none" v-model="user.password"
+                                v-if="user" placeholder="••••••••" />
                         </div>
                     </div>
                 </div>
@@ -105,11 +109,30 @@ export default {
     },
 
     setup() {
-        const user = useFirebaseUser();
-        
+        const { user, photoUrl } = useFirebaseUser();
+
         onMounted(async () => {
             await initUser();
         });
+
+
+        const openFilePicker = () => {
+            document.getElementById('fileInput').click();
+        };
+
+        const onFileChange = async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const photoURL = await updateProfilePhoto(user.value.uid, file);
+                user.value.photoURL = photoURL;
+                console.log("Photo de profil mise à jour avec succès.");
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour de la photo de profil :", error);
+            }
+        };
+
 
         const updateUserInfo = async () => {
             try {
@@ -128,7 +151,10 @@ export default {
 
         return {
             user,
-            updateUserInfo
+            photoUrl,
+            updateUserInfo,
+            openFilePicker,
+            onFileChange
         };
     }
 };
