@@ -13,14 +13,15 @@
             </div>
             <hr style="max-width: 68em; margin:auto" class="border border-brown_color">
 
-            <div class="max-w-30 flex flex-wrap justify-center items-center p-5 space-y-4">
+            <div class=" relative max-w-30 flex flex-wrap justify-center items-center p-5 space-y-4">
                 <div class="w-28 h-28 rounded-[56px] bg-center bg-cover mx-auto" v-if="user"
                     :style="{ backgroundImage: `url(${user.photoURL})` }">
                 </div>
+                <AvatarIcon v-if="user && user.photoURL == null" class="size-32 absolute left-0 top-0" style="color: #B55D51;"/>
                 <input type="file" id="fileInput" class="hidden" @change="onFileChange" />
                 <div class="flex flex-wrap justify-center gap-5 items-center">
                     <Button :button="modifier" @click="openFilePicker" style="color: white;" />
-                    <Button :button="supprimer" style="background-color: #EBEBEB; border: #000 solid 1.95px;" />
+                    <Button :button="supprimer" @click="removeAvatar" style="background-color: #EBEBEB; border: #000 solid 1.95px;" />
                 </div>
             </div>
 
@@ -134,6 +135,15 @@ export default {
             }
         };
 
+        const removeAvatar = async () => {
+            try {
+                await updateUser(user.value.uid, { photoURL: null });
+                user.value.photoURL = null;
+                console.log("Photo de profil supprimée avec succès.");
+            } catch (error) {
+                console.error("Erreur lors de la suppression de la photo de profil :", error);
+            }
+        };
 
         const updateUserInfo = async () => {
             try {
@@ -154,7 +164,8 @@ export default {
             user,
             updateUserInfo,
             openFilePicker,
-            onFileChange
+            onFileChange,
+            removeAvatar,
         };
     }
 };

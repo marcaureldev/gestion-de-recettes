@@ -19,10 +19,11 @@
                     </div>
 
                     <div class="lg:flex gap-3 items-center hidden">
-                        <NuxtLink to="/profile">
+                        <NuxtLink to="/profile" class="flex justify-between items-center">
                             <div class="w-10 h-10 rounded-[20px] bg-center bg-cover "
                               v-if="user"  :style="{ backgroundImage: `url(${user.photoURL})` }">
                             </div>
+                            <AvatarIcon v-if="user && user.photoURL == null" class="size-10" style="color: #B55D51;"/>
                         </NuxtLink>
                     </div>
 
@@ -33,10 +34,11 @@
                     </div>
 
                     <div class="flex justify-center items-center gap-3">
-                        <NuxtLink to="/profile">
+                        <NuxtLink to="/profile" class="flex justify-between items-center">
                             <div class="w-10 h-10 rounded-[20px] bg-center bg-cover lg:hidden" v-if="user"
                                 :style="{ backgroundImage: `url(${user.photoURL})` }">
                             </div>
+                            <AvatarIcon v-if="user && user.photoURL == null" class="size-10 lg:hidden" style="color: #B55D51;"/>
                         </NuxtLink>
                         <div class="flex items-center lg:hidden">
                             <!-- Mobile menu button-->

@@ -80,7 +80,7 @@
                     <label for="avatar" class="mb-3 block text-base text-gray_color"> Votre avatar (optionnel)</label>
                     <input type="file" name="avatar" id="avatar" @change="onFileChange"
                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 outline-none focus:border-[#6A64F1] focus:shadow-md"
-                        required="">
+                       >
                 </div>
 
                 <button type="submit" class="bg-brown_color rounded-md font-bold w-full py-3 px-6"
