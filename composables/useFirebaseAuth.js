@@ -59,7 +59,6 @@ export const initUser = async () => {
     firebaseUser.value = auth.currentUser;
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // Récupérer les informations utilisateur supplémentaires depuis Firestore
             const userData = await getUserData(user.uid);
             firebaseUser.value = { ...user, ...userData };
         } else {
@@ -68,7 +67,6 @@ export const initUser = async () => {
         }
     });
 }
-
 // Fonction pour récupérer les informations utilisateur supplémentaires
 export const getUserData = async (uid) => {
     const db = getFirestore();
@@ -148,7 +146,7 @@ export const updateProfilePhoto = async (uid, file) => {
     const auth = getAuth();
     const user = auth.currentUser;
     try {
-        const fileRef = ref(storage, `profile_photos/${uid}/${file.name}`);
+        const fileRef = ref(storage, `avatars/${uid}/${file.name}`);
         const snapshot = await uploadBytes(fileRef, file);
         const photoURL = await getDownloadURL(snapshot.ref);
         await updateProfile(user, { photoURL });

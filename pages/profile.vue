@@ -14,8 +14,8 @@
             <hr style="max-width: 68em; margin:auto" class="border border-brown_color">
 
             <div class="max-w-30 flex flex-wrap justify-center items-center p-5 space-y-4">
-                <div class="w-28 h-28 rounded-[56px] bg-center bg-cover mx-auto"
-                    v-if="user" :style="{ backgroundImage: `url(${photoUrl})` }">
+                <div class="w-28 h-28 rounded-[56px] bg-center bg-cover mx-auto" v-if="user"
+                    :style="{ backgroundImage: `url(${user.photoURL})` }">
                 </div>
                 <input type="file" id="fileInput" class="hidden" @change="onFileChange" />
                 <div class="flex flex-wrap justify-center gap-5 items-center">
@@ -109,7 +109,8 @@ export default {
     },
 
     setup() {
-        const { user, photoUrl } = useFirebaseUser();
+        const user = useFirebaseUser();
+
 
         onMounted(async () => {
             await initUser();
@@ -151,7 +152,6 @@ export default {
 
         return {
             user,
-            photoUrl,
             updateUserInfo,
             openFilePicker,
             onFileChange
