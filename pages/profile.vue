@@ -13,11 +13,11 @@
             </div>
             <hr style="max-width: 68em; margin:auto" class="border border-brown_color">
 
-            <div class=" relative max-w-30 flex flex-wrap justify-center items-center p-5 space-y-4">
+            <div class="relative max-w-30 flex flex-wrap justify-center items-center p-5 space-y-4">
                 <div class="w-28 h-28 rounded-[56px] bg-center bg-cover mx-auto" v-if="user"
                     :style="{ backgroundImage: `url(${user.photoURL})` }">
                 </div>
-                <AvatarIcon v-if="user && user.photoURL == null" class="size-32 absolute left-0 top-0" style="color: #B55D51;"/>
+                <AvatarIcon v-if="user && user.photoURL == null" class="size-32 absolute left-0 top-0 avatar" style="color: #B55D51;"/>
                 <input type="file" id="fileInput" class="hidden" @change="onFileChange" />
                 <div class="flex flex-wrap justify-center gap-5 items-center">
                     <Button :button="modifier" @click="openFilePicker" style="color: white;" />
@@ -171,4 +171,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+    .avatar {
+        @media (max-width: 475px) {
+            position: absolute;
+            left: 95px;
+            bottom: 20px;
+        }
+    }
+</style>

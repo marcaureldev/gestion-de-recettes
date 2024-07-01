@@ -129,7 +129,7 @@ export default {
             try {
                 avatarUrl.value = file;
             } catch (error) {
-                console.error("Erreur lors de la mise à jour de la photo de profil :", error);
+                console.error("Erreur lors de la récupération de l'avatar :", error);
             }
         };
 

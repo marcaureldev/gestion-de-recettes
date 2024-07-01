@@ -8,9 +8,8 @@ import {
     GoogleAuthProvider,
     updateProfile,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
 // Fonction pour créer un nouvel utilisateur lors de sa première inscription
 export const createUser = async (email, password, additionalData, avatarUrl) => {
     const auth = getAuth();
@@ -156,6 +155,32 @@ export const updateProfilePhoto = async (uid, file) => {
 
         return photoURL;
     } catch (error) {
+        throw error;
+    }
+};
+
+// Fonction pour ajouter un recette dans la base de  donnée
+
+export const addRecipe = async (recipeData, image) => {
+    const auth = getAuth();
+    const db = getFirestore();
+    const storage = getStorage();
+    try {
+        let imageURL = null;
+        if (image) {
+            const storageRef = ref(storage, `recettes/${auth.currentUser.uid}/${image.name}`);
+            await uploadBytes(storageRef, image);
+            imageURL = await getDownloadURL(storageRef);
+        }
+
+        const newRecipeRef = doc(collection(db, "recettes")); // Generate a new document reference
+        await setDoc(newRecipeRef, {
+            ...recipeData,
+            imageURL,
+        });
+        console.log("Recipe added successfully!");
+    } catch (error) {
+        console.error("Error adding document: ", error);
         throw error;
     }
 };
