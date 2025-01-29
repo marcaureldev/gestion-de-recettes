@@ -1,6 +1,6 @@
 <template>
     <div class="border-[1px] border-gray max-w-[20em] rounded-lg">
-        <img :src="trending.imageName" alt="Les Recetes qui fond tendance" class="w-[20em] rounded-lg">
+        <img :src="trending.imageName" alt="Les Recettes qui fond tendance" class="w-[20em] rounded-lg">
         <div class="flex justify-between items-center p-2">
             <div class="flex gap-1 items-center w-28">
                 <IconStars v-for="stars in Math.floor(trending.count)" :key="stars" style="color: #B55D51;"
@@ -34,8 +34,6 @@ export default {
     }
 
 }
-
-
 </script>
 
 <style></style>

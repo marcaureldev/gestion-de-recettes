@@ -19,10 +19,9 @@
             </span>
           </h1>
 
-          <p class="text-gray_color text-center text-sm sm:text-[16px] md:text-start max-w-40">
+          <p class="text-gray_color text-center text-xs sm:text-sm md:text-start max-w-40">
             Explorez une galaxie de saveurs, partagez vos créations gourmandes et connectez-vous avec d'autres
-            passionnés de cuisine. Inspirez-vous, échangez des recettes authentiques et embarquez pour une aventure
-            culinaire inoubliable chaque jour.
+            passionnés de cuisine. Inspirez-vous et échangez chaque jour des recettes authentiques
           </p>
 
           <div class="space-y-2 text-center md:text-start">
@@ -48,7 +47,7 @@
 
         <div class="text-center space-y-5">
           <h1 class="text-3xl font-bold">Partager Vos <span class="text-brown_color">Recettes</span></h1>
-          <p class="text-gray_color text-sm sm:text-[16px]">
+          <p class="text-gray_color text-xs sm:text-sm">
             Découvrez un monde de saveurs sur notre plateforme de partage de recettes ! Que vous soyez un chef amateur
             ou un passionné de cuisine, explorez, créez et partagez vos meilleures recettes avec une communauté de
             gourmets enthousiastes. Rejoignez-nous pour une expérience culinaire délicieusement inspirante.
@@ -65,9 +64,9 @@
         <h1 class="text-3xl font-bold">À la une</h1>
         <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 place-items-center">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
         <TrendingCard v-for="(recipe, i) in trendindRecipes" :key="i" :trending="recipe"
-          class=" hover:scale-90 duration-700 ease-in-out" />
+          class=" hover:scale-105 duration-500 ease-in-out" />
       </div>
     </section>
 
@@ -78,9 +77,9 @@
         <h1 class="text-3xl font-bold">Blog</h1>
         <p class="text-end text-brown_color text-lg font-bold">Voir plus</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 place-items-center ">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center ">
         <BlogCard v-for="(element, index) in blogData" :key="index" :blog="element"
-          class=" hover:scale-110 duration-700 ease-in-out" />
+          class=" hover:scale-105 duration-500 ease-in-out" />
       </div>
     </section>
 
@@ -93,7 +92,7 @@
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 place-items-center">
         <TrendingCard v-for="(recipe, i) in exploreRecipes" :key="i" :trending="recipe"
-          class=" hover:scale-90 duration-700 ease-in-out" />
+          class=" hover:scale-105 duration-500 ease-in-out" />
       </div>
     </section>
 

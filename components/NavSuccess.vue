@@ -11,7 +11,7 @@
                     <div class="flex items-center justify-center sm:items-stretch sm:justify-start">
                         <div class="hidden sm:ml-6 lg:block">
                             <div class="flex space-x-4 font-semibold">
-                                <a v-for="item in navigation" :key="item.name" href="">
+                                <a v-for="item in navigation" :key="item.name" :href="item.href">
                                     {{ item.name }}
                                 </a>
                             </div>
@@ -75,9 +75,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { PhotoIcon } from '@heroicons/vue/16/solid';
 
 const navigation = [
-    { name: 'Accueil', href: '#', current: true },
+    { name: 'Accueil', href: '/success', current: true },
     { name: 'Recettes', href: '#', current: false },
-    { name: 'Ajouter une recette', href: '#', current: false },
+    { name: 'Ajouter une recette', href: '/add-recipes', current: false },
     { name: 'Blog', href: '#', current: false },
     { name: 'À Propos', href: '#', current: false },
 ];
