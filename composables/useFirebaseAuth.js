@@ -9,7 +9,7 @@ import {
     updateProfile,
 } from "firebase/auth";
 
-import { getFirestore, collection, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, getDocs, query, orderBy } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Fonction pour créer un nouvel utilisateur lors de sa première inscription
@@ -188,5 +188,49 @@ export const addRecipe = async (recipeData, image) => {
     } catch (error) {
         console.error("Error adding document: ", error);
         throw error;
+    }
+};
+
+// Fonction pour récupérer toutes les recettes
+
+export const getAllRecipes = async () => {
+    const db = getFirestore();
+    try {
+        const recipesQuery = query(
+            collection(db, 'recettes'),
+        );
+        
+        const querySnapshot = await getDocs(recipesQuery);
+        
+        return querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate().toLocaleDateString() || 'Date inconnue'
+        }));
+    } catch (error) {
+        console.error('Erreur lors de la récupération des recettes:', error);
+        throw new Error('Impossible de récupérer les recettes');
+    }
+};
+
+// Fonction pour récupérer une recette spécifique par son ID
+export const getRecipeById = async (recipeId) => {
+    const db = getFirestore();
+    try {
+        const recipeRef = doc(db, 'recettes', recipeId)
+        const recipeDoc = await getDoc(recipeRef);
+        
+        if (!recipeDoc.exists()) {
+            return null;
+        }
+
+        return {
+            id: recipeDoc.id,
+            ...recipeDoc.data(),
+            createdAt: recipeDoc.data().createdAt?.toDate().toLocaleDateString() || 'Date inconnue'
+        };
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la recette:', error);
+        throw new Error('Impossible de récupérer la recette');
     }
 };

@@ -76,7 +76,7 @@ import { PhotoIcon } from '@heroicons/vue/16/solid';
 
 const navigation = [
     { name: 'Accueil', href: '/success', current: true },
-    { name: 'Recettes', href: '#', current: false },
+    { name: 'Recettes', href: '/recipes', current: false },
     { name: 'Ajouter une recette', href: '/add-recipes', current: false },
     { name: 'Blog', href: '#', current: false },
     { name: 'À Propos', href: '#', current: false },
