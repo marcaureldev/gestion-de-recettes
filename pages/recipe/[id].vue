@@ -50,11 +50,11 @@
 
       <!-- Author Info -->
       <div class="flex items-center space-x-4 py-4 border-b">
-        <img
-          :src="recipe.authorPhotoURL || '/images/default-avatar.png'"
-          :alt="recipe.authorName"
-          class="w-12 h-12 rounded-full"
-        />
+        <div
+          class="w-12 h-12 bg-cover bg-center bg-no repeat rounded-full"
+          :style="{ backgroundImage: `url(${recipe.author.photoURL})` }"
+        ></div>
+
         <div>
           <p class="font-medium">{{ recipe.authorName }}</p>
           <p class="text-sm text-gray-600">Publié le {{ recipe.createdAt }}</p>

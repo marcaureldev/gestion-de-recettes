@@ -202,11 +202,26 @@ export const getAllRecipes = async () => {
         
         const querySnapshot = await getDocs(recipesQuery);
         
-        return querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            createdAt: doc.data().createdAt?.toDate().toLocaleDateString() || 'Date inconnue'
-        }));
+        return querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            let formattedDate = 'Date inconnue';
+            
+            if (data.createdAt) {
+                if (typeof data.createdAt === 'number') {
+                    // Si c'est un timestamp numérique
+                    formattedDate = new Date(data.createdAt).toLocaleDateString();
+                } else if (data.createdAt?.toDate) {
+                    // Si c'est un Timestamp Firestore
+                    formattedDate = data.createdAt.toDate().toLocaleDateString();
+                }
+            }
+            
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: formattedDate
+            };
+        });
     } catch (error) {
         console.error('Erreur lors de la récupération des recettes:', error);
         throw new Error('Impossible de récupérer les recettes');
@@ -224,10 +239,23 @@ export const getRecipeById = async (recipeId) => {
             return null;
         }
 
+        const data = recipeDoc.data();
+        let formattedDate = 'Date inconnue';
+        
+        if (data.createdAt) {
+            if (typeof data.createdAt === 'number') {
+                // Si c'est un timestamp numérique
+                formattedDate = new Date(data.createdAt).toLocaleDateString();
+            } else if (data.createdAt?.toDate) {
+                // Si c'est un Timestamp Firestore
+                formattedDate = data.createdAt.toDate().toLocaleDateString();
+            }
+        }
+
         return {
             id: recipeDoc.id,
-            ...recipeDoc.data(),
-            createdAt: recipeDoc.data().createdAt?.toDate().toLocaleDateString() || 'Date inconnue'
+            ...data,
+            createdAt: formattedDate
         };
     } catch (error) {
         console.error('Erreur lors de la récupération de la recette:', error);

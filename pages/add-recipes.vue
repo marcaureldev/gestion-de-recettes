@@ -12,7 +12,8 @@
         class="flex justify-between items-center px-4 py-3 mt-5 max-w-70 mx-auto"
       >
         <h1 class="text-xl font-bold">Créer une nouvelle recette</h1>
-        <LoadingButton style="color: white"
+        <LoadingButton
+          style="color: white"
           @click="addNewRecipe"
           :isLoading="isLoading"
           :isSuccess="isSuccess"
@@ -264,7 +265,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -274,6 +277,7 @@ export default {
   },
 
   setup() {
+    const router = useRouter();
     const recipeName = ref("");
     const image = ref("");
     const description = ref("");
@@ -287,10 +291,37 @@ export default {
     const variable = ref(null);
     const ingredients = ref([{ id: Date.now(), value: "" }]);
     const instructions = ref([{ id: Date.now(), value: "" }]);
-    
+    const createdAt = ref(Date.now());
+    const currentUser = ref(null);
+    const userPhotoURL = ref(null);
+    const userName = ref(null);
+
     // États pour le bouton de chargement
     const isLoading = ref(false);
     const isSuccess = ref(false);
+
+    onMounted(() => {
+      const auth = getAuth();
+      
+      // Utiliser onAuthStateChanged pour gérer l'état de l'authentification
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // L'utilisateur est connecté
+          currentUser.value = user;
+          try {
+            const userData = await getUserData(user.uid);
+            userPhotoURL.value = userData?.photoURL || user.photoURL;
+            userName.value = userData?.displayName || user.displayName || user.email.split('@')[0];
+            userCreatedAt.value = userData?.createdAt || null;
+          } catch (error) {
+            console.error("Erreur lors de la récupération des données utilisateur:", error);
+          }
+        } else {
+          // L'utilisateur n'est pas connecté
+          router.push('/login');
+        }
+      });
+    });
 
     const openFilePicker = () => {
       document.getElementById("fileInput").click();
@@ -307,9 +338,7 @@ export default {
     };
 
     const removeIngredient = (id) => {
-      ingredients.value = ingredients.value.filter(
-        (input) => input.id !== id
-      );
+      ingredients.value = ingredients.value.filter((input) => input.id !== id);
     };
 
     const addInstruction = () => {
@@ -343,6 +372,11 @@ export default {
         isLoading.value = true;
         isSuccess.value = false;
 
+        if (!currentUser.value) {
+          error.value = "Vous devez être connecté pour ajouter une recette";
+          return;
+        }
+
         // Vérification des champs requis
         if (!recipeName.value || !description.value) {
           throw new Error("Veuillez remplir tous les champs requis.");
@@ -351,17 +385,13 @@ export default {
         // Collecte des ingrédients dynamiques
         const allIngredients = [
           ingredient.value,
-          ...ingredients.value
-            .map((input) => input.value)
-            .filter(Boolean),
+          ...ingredients.value.map((input) => input.value).filter(Boolean),
         ];
 
         // Collecte des instructions dynamiques
         const allInstructions = [
           instruction.value,
-          ...instructions.value
-            .map((input) => input.value)
-            .filter(Boolean),
+          ...instructions.value.map((input) => input.value).filter(Boolean),
         ];
 
         const recipeData = {
@@ -374,11 +404,17 @@ export default {
           cuisson: cuisson.value,
           cuisine: cuisine.value,
           categorie: categorie.value,
+          createdAt: createdAt.value,
+          author: {
+            uid: currentUser.value?.uid,
+            photoURL: userPhotoURL.value,
+            displayName: userName.value
+          },
         };
 
         await addRecipe(recipeData, variable.value);
         isSuccess.value = true;
-        
+
         // Réinitialiser le formulaire après 1.5 secondes
         setTimeout(() => {
           resetForm();
